@@ -1,0 +1,410 @@
+body{zoom: 1;overflow: auto;background: #121321;}
+#loading{position:fixed;top:0;left:0;width:1920px;height:1080px;background: #1c2532;opacity: 0.5;z-index: 5000;display: block;}
+#bodyDiv{position: absolute;top:0;left:0;width: 1860px;height: 900px;margin-bottom: 20px;}
+body,p,div{padding: 0;margin: 0;}
+#titleMain,#title7Main{
+    width: 100%;height:753px;margin: 133px 35px 0;overflow-y: auto;
+}
+#title7Main{display: none;}
+#timeCtx,#time7Ctx{position:absolute;top:110px;left:215px;}
+/*#cnsBor{position:fixed;top:131px;left:254px;border: 1px solid #000;width: 1585px;height: 756px;font-size:16px;}*/
+
+#otherBtn{position: relative;top:20px;left: 30px;width: 25%; z-index: 1000;}
+/*#otherBtn{zoom: 2000;}*/
+#titleMain #d3,#title7Main #d73{position: absolute;top:130px;left:35px;height:756px;z-index: 1000;overflow-x: hidden;overflow-y: scroll;}
+
+/* -2减去边框线的影响 */
+#configCtx,#config7Ctx,#dataCtx,#data7Ctx{position: absolute;top:-2px;left: 201px;}
+
+#timeDiv{
+    position:absolute;top:20px;right:120px;z-index: 1000;width: 320px;height: 50px;line-height: 38px;
+}
+#timeBtn label{position:relative;display: inline-block;}
+
+/*.control-group,.timeBtn{*/
+    /*height: 30px;*/
+/*}*/
+.control-group{
+    display: inline-block;
+    height: 30px;
+    margin: 0;
+}
+
+.timeBtn{
+    background: transparent;
+    border: 1px solid #00bb54;
+    border-radius: 2px;
+    /*height: 28px;*/
+    margin: 0 5px;
+    /*cursor: pointer;*/
+}
+.g-left,.g-right{
+    display: inline-block;
+    border-width: 6px;
+    border-style: solid;
+}
+
+.g-left{
+    border-color: transparent #00bb54 transparent transparent;
+}
+.g-right{
+    border-color:  transparent transparent transparent #00DE64;
+}
+
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 180px;
+}
+
+.bootstrap-select.btn-group ul.dropdown-menu{
+    max-height: 500px;
+}
+
+#myModal-change{width: 250px;z-index: 3000;}
+
+#myModal-change input{
+    margin-bottom: 2px;
+}
+#myModal-change p{
+    margin-bottom: 5px;
+}
+#myModal-change button{
+    padding: 2px 6px;
+    font-size: 13px;
+}
+
+#myModal-change .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+    width: 150px;
+}
+#myModal-change input{
+    width: 135px;
+    padding: 2px 6px;
+}
+#myModal-change .close{
+    color: #0049ca;
+    opacity: 1;
+    font-size: 14px;
+    line-height: 13px;
+    margin-right: -10px;
+}
+
+
+
+.datetimepicker{
+    top:77px !important;
+    left: 84% !important;
+    /*right:120px !important;*/
+    width: 215px;
+}
+#timeKey:hover{cursor: pointer;}
+#lineBtn{position: relative;
+    z-index: 1000;margin: 35px 0 0 235px;}
+#lineBtn label{
+    position: relative;
+    display: inline-block;
+    padding: 0 10px 8px;
+    /* margin: 0 10px; */
+    font-size: 16px;
+}
+
+.textColor1{
+    color: #E3DBDE !important;
+}
+#myModal-submit p{margin-bottom: 10px;}
+#myModal-submit select{width: 176px;}
+.milInput{width: 50px;}
+#update_time .milInput{margin: 0 5px 0 10px;}
+#dataDesc{
+    position: absolute;
+    bottom: 0;
+    left: 50px;
+    width: 91%;
+    padding: 15px 20px;
+    background: #ebf0f9;
+    border: 1px solid #3d3d3d;
+    border-radius: 5px;
+}
+#myModalDesc{
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 50px;
+    width: 230px;
+    height: 270px;
+    background: #283549;
+    opacity: 0.9;
+    padding: 15px 20px;
+    border-radius: 5px;
+    z-index: 10000;
+    color: #fff;
+    font-size: 15px;
+}
+#myModalDesc>div{
+    margin-bottom: 10px;
+}
+
+#myModalDesc>div>span:first-child{
+    display: inline-block;
+    width: 100px;
+}
+.sub_message{
+    text-align: center;
+    color: #e4393c;
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 25px;
+}
+
+#myModal-update .modal-body p{
+    text-align: left;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.update_show table th{
+    text-align: center;
+    /* border: 1px solid #ddd !important; */
+}
+.update_show table td{
+    border: 1px solid #ddd;
+    padding: 8px 2px;
+    text-align: center;
+    font-size: 14px;
+}
+.update_show table td.timeWord{
+    font-size: 13px;
+}
+
+#myModal-config th{
+    background: #f2f2f2;
+}
+
+#myModal-info{
+    position: absolute;
+    top: 915px;
+    left: 40px;
+    z-index: 1000;
+    width: 1800px;
+    background: #ebedf7;
+    color: #1d3299;
+    /*opacity: 1.8;*/
+    border: 1px solid #1d3299;
+    border-radius: 5px;
+    display: none;
+}
+
+/*#myModal-info p{}*/
+
+#myModal-info p{
+    display: inline-block;
+    margin-right: 50px;
+    font-size: 16px;
+    text-align: left;
+    color: #00509E
+}
+
+.inputStatus{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 22px;
+    height: 15px;
+    opacity: 0;
+}
+
+.inputStyle2{
+    position: relative;
+    top: 3px;
+    left: 0;
+    display: inline-block;
+    padding: 10px;
+    background: url("inputType.png") no-repeat -52px -2px;
+}
+
+.inputStatus:checked+.inputStyle2{
+    background: url("inputType.png") no-repeat -75px -2px;
+}
+
+#configBtn[readonly]{
+    cursor: pointer;
+}
+
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly]{
+    background-color: transparent;
+}
+
+#configTBody ul.dropdown-menu{
+    max-height: 160px !important;
+}
+
+#configTBody  .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+    width: 97px;
+}
+#configTBody .btn-group>.btn, .btn-group>.dropdown-menu, .btn-group>.popover{
+    width: 97px;
+    font-size: 12px;
+    padding: 4px;
+}
+#configTBody .bootstrap-select.btn-group .btn .caret{
+    right: 3px;
+}
+
+#configTBody input{
+    width: 80px;
+}
+#myModal-config .modal-body{
+    max-height: 600px;
+}
+
+#myModal-config table td,#myModal-config table th{
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+#myModal-config .cContent{
+    text-align: left;
+    font-size: 18px;
+}
+
+.showLabel{
+    position: relative;margin-left: 45px;
+    cursor: pointer;
+}
+
+.showBtn{
+    position: absolute;top: 1px;left: 0;width: 30px;height: 18px;
+    border-radius: 5px;
+}
+.btn2{
+    border: 0;
+    padding: 8px 14px;
+    border-radius: 5px;
+}
+
+
+
+/*加载*/
+.spinner {
+    margin: 250px auto;
+    width: 250px;
+    height: 250px;
+    position: relative;
+}
+
+.container1>div,
+.container2>div,
+.container3>div {
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    border-radius: 100%;
+    position: absolute;
+    animation: bouncedelay 1.5s infinite;
+}
+
+.spinner .spinner-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.container2 {
+    transform: rotateZ(45deg);
+}
+
+.circle1 {
+    top: 0;
+    left: 0;
+}
+
+.circle2 {
+    top: 0;
+    right: 0;
+}
+
+.circle3 {
+    right: 0;
+    bottom: 0;
+}
+
+.circle4 {
+    left: 0;
+    bottom: 0;
+}
+
+.container2 .circle1 {
+    animation-delay: -1.4s;
+}
+
+.container1 .circle2 {
+    animation-delay: -1.2s;
+}
+
+.container2 .circle2 {
+    animation-delay: -1s;
+}
+
+.container1 .circle3 {
+    animation-delay: -0.8s;
+}
+
+.container2 .circle3 {
+    animation-delay: -0.6s;
+}
+
+
+.container1 .circle4 {
+    animation-delay: -0.4s;
+}
+
+.container2 .circle4 {
+    animation-delay: -0.2s;
+}
+
+
+@keyframes bouncedelay {
+
+    0%,
+    80%,
+    100% {
+
+        transform: scale(0.0);
+
+    }
+
+    40% {
+        transform: scale(1.1);
+    }
+
+    from {
+        background-color:#039BD6;
+    }
+
+    to {
+        background: #03D6D3;
+    }
+
+
+}
+
+.modal-backdrop, .modal-backdrop.fade.in{
+    opacity: 0.5
+}
+
+.bgBlink {
+    
+    animation:bgBlink 500ms infinite;
+    -webkit-animation:bgBlink 500ms infinite;
+}
+
+.bgBlink>b{font-size: 18px;}
+
+@keyframes bgBlink {
+    from { background-color:#FFD600; }
+    50%{background-color:#f00;}
+    to { background-color:#FFD600; }
+}
+
+@-webkit-keyframes bgBlink {
+    from { background-color:#FFD600; }
+    50%{background-color:#f00;}
+    to { background-color:#FFD600; }
+}

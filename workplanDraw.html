@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图表</title>
+    <link rel="stylesheet" href="workPlan/bootstrapYs.min.css">
+    <link rel="stylesheet" href="workPlan/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="workPlan/myChart.css">
+    <script src="workPlan/jQuery-3.3.1.min.js"></script>
+    <script src="workPlan/bootstrap.js"></script>
+    <script>
+        // (function(){location.reload(window.location.href);})()
+        // var serverIp="http://114.116.99.26:9092",serIp2="http://47.99.211.157:8081";
+
+        var serverIp="http://114.116.99.26:9092",serIp2="stage-api/";
+    </script>
+</head>
+<body>
+<div id="loading">
+    <div class="spinner">
+        <div class="spinner-container container1">
+            <div class="circle1"></div>
+            <div class="circle2"></div>
+            <div class="circle3"></div>
+            <div class="circle4"></div>
+            <p id="load_alert" style="margin: 100px 50px; font-size: 22px;color: #00d0ff;"><span style="padding-left: 25px;">加载中......</span></p>
+        </div>
+        <div class="spinner-container container2">
+            <div class="circle1"></div>
+            <div class="circle2"></div>
+            <div class="circle3"></div>
+            <div class="circle4"></div>
+        </div>
+    </div>
+</div>
+
+    <div id="bodyDiv">
+
+        <div id="titleMain">
+            <canvas id="timeCtx" width="1620" height="778"></canvas>
+                <div id="d3">
+                    <canvas id="backstageCtx" width="1785"></canvas>
+                    <canvas id="configCtx" width="1584"></canvas>
+                    <canvas id="dataCtx" width="1584"></canvas>
+                </div>
+        </div>
+
+        <div id="title7Main">
+            <canvas id="time7Ctx" width="1620" height="778"></canvas>
+            <div id="d73">
+                <canvas id="backstage7Ctx" width="1755"></canvas>
+                <canvas id="config7Ctx" width="1584"></canvas>
+                <canvas id="data7Ctx" width="1584"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <div id="otherBtn">
+        <button id="subBtn" class="btn btn-success"  data-toggle="modal" data-target="#myModal-update" disabled onclick="subData(0,'postTBody')">修改完成，提交</button>
+    </div> -->
+
+
+    <div id="lineBtn">
+        <label class="textColor1">
+            <!-- <input id="trackLineTypeS" checked type="radio" class="inputStatus" name="trackLine" value="S" onclick="planAjax(this)">  -->
+            <input id="trackLineTypeS" checked type="radio" class="inputStatus" name="trackLine" value="S"> 
+            <!-- <span class="inputStyle2"></span> -->
+            <span id="linaName1">上行线 作业数量：<b id="line1typeNum">0</b></span>
+        </label>
+
+        <label class="textColor1">
+            <!-- <input id="trackLineTypeX" type="radio" class="inputStatus" name="trackLine" value="X" onclick="planAjax(this)">  -->
+            <input id="trackLineTypeX" type="radio" class="inputStatus" name="trackLine" value="X"> 
+            <!-- <span class="inputStyle2"></span> -->
+            <span id="linaName2">下行线 作业数量：<b id="line2typeNum">0</b></span>
+        </label>
+
+        <label class="textColor1">
+            <!-- <input id="trackLineTypeSX" type="radio" class="inputStatus" name="trackLine" value="SX" onclick="planAjax(this)">  -->
+            <input id="trackLineTypeSX" type="radio" class="inputStatus" name="trackLine" value="SX"> 
+            <!-- <span class="inputStyle2"></span> -->
+            <span id="linaName3">上下行线 作业数量：<b id="line3typeNum">0</b></span>
+        </label>
+
+
+        <!-- <label class="showLabel textColor1">
+            <input type="checkbox" class="btn" style="opacity: 0;width: 25px;"> <span id="planType">上行线作业数量</span>： <span id="planNum"></span>
+            <span class="showBtn" id="lineSpan" style="background: #7C944E;"></span>
+        </label> -->
+
+        <!-- <a href="javascript:;" class="showLabel" style='color: #ff6969' title="点击查看详情" data-toggle='modal' data-target='#myModal-config' > -->
+        <a href="javascript:;" class="" style='color: #ff4c4f; padding: 13px;border-radius: 5px; font-size: 15px;cursor: default;' >
+            <!-- <input type="checkbox" class="btn" style="opacity: 0;width: 25px;" id="configBtn">  -->
+            冲突作业数量： <b id="configNum">0</b>
+            <!-- <span class="showBtn" style="background: #DF6060;"></span> -->
+        </a>
+    </div>
+
+
+    <div id="timeDiv">
+        <button class="timeBtn" style="padding: 2px 10px 2px 5px;" onclick="timeChange(0)"> <span class="g-left"></span> </button>
+        <div class="control-group">
+           
+            <div class="controls input-append date form_datetime" data-date-format="yyyy-MM-dd">
+                <input class="textColor1" style="width: 120px;border: 1px solid #00bb54;" id="timeKey" size="16" type="text" readonly>
+                <span style="display: none;" class="add-on"><i class="icon-remove"></i></span>
+                <span style="display: none;" class="add-on"><i class="icon-calendar"></i></span>
+               
+            </div>
+        </div>
+
+        <button class="timeBtn" style="padding: 2px 5px 2px 10px;" onclick="timeChange(1)"> <span class="g-right"></span> </button>
+
+        <div class="textColor1" style="float: right;font-size: 18px;">
+            星期 <span id="weekDay"></span>
+        </div>
+
+        <div id="timeBtn">
+
+            <label style="margin-right: 55px;">
+                <input id="time18" checked type="radio" class="inputStatus" name="time" onclick="planAjax()"> <span class="inputStyle2"></span><span style="padding-left: 10px;" class="textColor1">18:00 - 18:00</span>
+            </label>
+
+            <label>
+                <input id="time0" type="radio" class="inputStatus" name="time" onclick="planAjax()"> <span class="inputStyle2"></span><span style="padding-left: 10px;" class="textColor1">00:00 - 07:00</span>
+            </label>
+        </div>
+    </div>
+
+
+    <div id="myModalDesc">
+        <div>
+            <span>作业代码：</span> <span id="s-plan-code"></span>
+        </div>
+        <div>
+            <span>作业类型：</span> <span id="s-plan-type"></span>
+        </div>
+        <div>
+            <span>作业单位：</span> <span id="s-plan-company"></span>
+        </div>
+        <div>
+            <span>供电安排：</span> <span id="s-plan-power"></span>
+        </div>
+        <div>
+            <span>防护措施：</span> <span id="s-plan-guardMeasure"></span>
+        </div>
+        <div>
+            <span>施工负责人：</span><span id="s-plan-user"></span>
+        </div>
+        <div>
+            <span>作业内容：</span> <span id="s-plan-content"></span>
+        </div>
+    </div>
+
+
+    <!-- <div class="modal fade" id="myModal-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 820px;display: none;">
+        <div class="modal-dialog modelBg update_show">
+            <div class="modal-content modal-del">
+                <div class="modal-body" style="text-align: center;padding: 10px 15px;">
+                    <div>
+                        <h5 style="margin: 10px 0 20px;font-size: 19px;">冲突计划信息</h5>
+                        <table class="table table-hover" style="font-size: 15px;">
+                            <thead>
+                            <tr>
+                                <th>作业代码</th>
+                                <th>冲突作业代码</th>
+                                <th>冲突类型</th>
+                                <th>线别</th>
+                            </tr>
+                            </thead>
+                            <tbody id="configTBody">
+                              
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer" style="text-align: center;background: #E8EAF0">
+
+                    <button type="button" class="btn btn-success" id="all-del-btn" onclick=""> 前往处理 </button> &nbsp; &nbsp;
+
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">关 闭</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="textColor1" style="position: absolute;top: 900px;left: 750px;">
+        <button class="btn2" style="background: #F6F76D"> </button> ZA 、 ZB
+
+        <button class="btn2" style="background: #8390CB;margin-left: 50px;"> </button> ZC 、 ZD
+
+        <button class="btn2" style="background: #C20E21;margin-left: 50px;"> </button> 冲突计划
+    </div>
+
+    
+    <script src="workPlan/bootstrap_datetimepicker.min.js" charset="UTF-8"></script>
+    <script src="workPlan/bootstrap-select.js"></script>
+    <script src="workPlan/data.js"></script>
+    <script src="workPlan/workPlan.js"></script>
+    <script>
+        // console.log($("#lineBtn label").css("color"));
+
+        
+        $('.form_datetime').datetimepicker({
+            language:  'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: true
+        });
+        var drawMain={
+            rectSX:200,
+            rectSY:100,
+            colorB:"#0076D3",
+            colorC:"#CECECE",
+            color0:"#4B4B4B",
+            milColor:"#009966",
+            textColor1:"",   //车站、里程、时间
+            borderColor1:"#ddd",
+            lineColor1:"#9DAFB9",   //车站对线
+            timeLineColor:"#21213E",
+            // Py:1500/(564500.2-170118.5),
+            dataRect:[],
+            hourPx:65,
+            canM:"",
+            mtx:"",
+            cursorY1:0,
+            cursorX1:0,
+            cursorY2:0,
+            cursorX2:0,
+            brushId:"dataCtx",
+            configBrush:"configCtx",
+            configCtx:"",
+            Height:0,
+            stationPx:[],
+            init:function(){
+
+            },
+            timeTitle:function(id){
+
+                var canvas=document.getElementById(id);
+                var ctx=canvas.getContext('2d');
+                ctx.font="17px Microsoft YaHei";
+                ctx.fillStyle=this.textColor1;
+                ctx.strokeStyle=this.textColor1;
+                // var num=0;
+                var n1=0;
+                if(id=="timeCtx"){
+                    ctx.strokeRect(20,20,canvas.width-36,canvas.height-21);
+                    for(var i=0;i<25;i++){
+                        n1=(i===6)?n1=-18:n1;
+                        if(n1+18<10){
+                            ctx.fillText(n1+18,i*66+14,15);
+                        }else{
+                            ctx.fillText(n1+18,i*66+10,15);
+                        }
+                        n1++;
+                    }
+                }else{
+                    // console.log(canvas.width-26-20);
+                    ctx.strokeRect(20,20,1554,canvas.height-21);
+                    for(var j=0;j<8;j++){
+
+                        ctx.fillText(j,j*222+15,15);
+
+                    }
+                }
+
+            },
+            backstage:function (id,stationPx) {
+                
+                var that=this;
+
+                var canvas=document.getElementById(id);
+                var ctx=canvas.getContext('2d');
+
+                var x1=this.rectSX;y1=this.rectSY;
+                
+                var station=stationData;
+
+                // console.log(stationPx);
+
+                var staLength=station.length;
+                var posY,staX=0;
+                for(var s=0;s<staLength;s++){
+                    ctx.font="15px Microsoft YaHei";
+                    ctx.fillStyle=that.textColor1;
+
+                    posY=this.stationPx[s];
+
+
+                    staX=ctx.measureText(station[s].name).width;    //车站名宽度
+
+                    ctx.fillText(station[s].name,10,posY);
+                    this.lineDraw(ctx,110,posY,1820,posY,1,that.lineColor1);
+
+
+                    ctx.font="13px Microsoft YaHei";
+                    ctx.fillStyle=that.textColor1;
+                    ctx.fillText(mileageShow(station[s].centerM),staX+15,posY);
+                }
+
+                //trackLine
+                // var tx2=ctx.measureText(lineData.data[0].endMil).width+7;
+                // this.trackLine(ctx,3040-tx2*1.7,15,lineData.data[0].endMil);
+                // console.log(lineData[0]);
+
+            
+
+
+                // console.log(comJudgeStaPx(91));
+
+                //timeLine
+                var lineSpace=11,lengthNum=150;
+                if(id=="backstage7Ctx"){
+                    lineSpace=37;lengthNum=42;
+                }
+                for(var i=0;i<lengthNum;i++){
+                    if(isInteger(i/6)){
+                        this.lineDraw(ctx,x1+lineSpace*i,1,x1+lineSpace*i,canvas.height,1,this.timeLineColor);
+                    }else{
+                        this.lineDraw(ctx,x1+lineSpace*i,1,x1+lineSpace*i,canvas.height,1,this.timeLineColor);
+                    }
+                }
+
+
+                this.trackLine(ctx,17,15,"开始里程："+mileageShow(lineData[0].startMil),17);
+                this.lineDraw(ctx,200,18,1800,18,2,this.milColor);
+
+                // this.lineDraw(ctx,200,15,200,canvas.height-13,4,"this.milColor"); //左侧边线
+
+                this.trackLine(ctx,17,canvas.height-4,"结束里程："+mileageShow(lineData[0].endMil),canvas.height-4);
+                this.lineDraw(ctx,200,canvas.height,1800,canvas.height,2,this.milColor);
+            },
+            lineDraw:function(ctx, x1, y1, x2, y2, lw, lc){
+                ctx.beginPath();
+                var lh = lw || 1;
+                var color = lc || this.colorB;
+                ctx.lineWidth = lh;
+                ctx.strokeStyle = color;
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            },
+            trackLine:function(ctx,x,y,pos,cy){
+                ctx.font="14px Microsoft YaHei";
+                ctx.fillStyle="#0ABF6C";
+                ctx.fillText(pos,205,y);
+                ctx.beginPath();
+                ctx.arc(x+182,cy,4,0,360*Math.PI/180);
+                ctx.closePath();
+                ctx.fillStyle=this.milColor;
+                ctx.fill();
+            },
+            drawData:function () {
+                var currentId=this.brushId;
+                var cCan=document.getElementById(currentId);
+                var ctx=cCan.getContext('2d');
+                var that=this;
+                that.canM=document.getElementById(currentId);
+                that.mtx=ctx;
+
+                ctx.clearRect(0,0,that.canM.width,that.canM.height);
+
+                var plan=planShowData;  //当前显示数据
+
+                console.log(plan);
+
+                var planL=plan.length;
+                var x1=0,y1=0,x2=0,y2=0,xw,yw;
+
+                // var lineType=checkLineType;  //线别类型
+
+                var workType="",zx2;    //作业类型 , 作业编号X2
+
+                for(var i=0;i<planL;i++){
+
+                    ctx.strokeStyle="#8390CB";      //ZC ZD 边框颜色
+
+                    workType= plan[i].workTypeCode.substring(0,2);
+
+                    if(workType == "ZA" || workType == "ZB"){
+                        ctx.strokeStyle="#F6F76D";      //ZA ZB 边框颜色
+                    } 
+
+                    // console.log();
+
+                    // if(lineType){
+                    //     ctx.strokeStyle="rgba(95,125,38,0.8)";  //上行线
+                    // }else{
+                    //     ctx.strokeStyle="rgba(45,123,234,0.8)";    //下行线
+                    // }
+
+                    // if(plan[i].includeConflict){    //冲突作业
+                    //     ctx.fillStyle="rgba(211,0,0,0.6)";
+                    // }else{
+                    //     ctx.fillStyle="rgba(0,0,0,0)";
+                    // }
+
+                    x1=Number(plan[i].pixX1);
+                    x2=Number(plan[i].pixX2);
+                    xw=x2-x1;
+                    y1=Number(plan[i].pixY1);
+                    y2=Number(plan[i].pixY2);
+                    yw=y2-y1;
+
+                    ctx.save();
+
+                    // if(plan[i].xz == 1){        //选中
+                    //     // 拉伸边框
+                    //     ctx.strokeStyle = "rgba(216,116,46,0.8)";
+                    //     ctx.lineWidth=bW;
+
+                    //     var halfW=bW/2;
+                    //     ctx.strokeRect(x1+halfW-2,y1+halfW-2,xw-halfW-1,yw-halfW-1);
+                    //     ctx.globalCompositeOperation="destination-over";
+
+                    //     ctx.restore();
+
+                    //     drawMain.cursorX1=x1;
+                    //     drawMain.cursorY1=y1;
+                    //     drawMain.cursorX2=x2;
+                    //     drawMain.cursorY2=y2;
+
+                    //     // console.log(plan[i].pixX1);
+                    // }
+
+                    // ctx.fillRect(x1+2,y1+2,xw-4,yw-4);
+                    ctx.lineWidth=4;
+                    ctx.strokeRect(x1+1,y1+1.5,xw,yw);
+
+                    //冲突区域
+
+                    // ctx.fillStyle = (plan[i].conflicts ===null)? "transparent": "rgba(211,13,33,0.7)";
+
+                    // ctx.fillRect(x1+3,y1+4,xw-4,yw-4);
+
+
+                    //计划编号
+                    ctx.font="normal 17px KaiTi";
+
+                    ctx.fillStyle=that.textColor1;
+
+                    zx2=(x2>1580)? 1580 : x2;
+
+                    ctx.fillText(plan[i].workCode,zx2-ctx.measureText(plan[i].workCode).width-3,y1+20);
+
+                    // ctx.globalCompositeOperation="destination-over";
+
+                    // ctx.globalCompositeOperation="lighter";
+                }
+
+
+                cCan.onmousedown=function (e) {
+                    // console.log(23232332);
+                    // $("#myModal-change").css("display","none");
+
+                    var gapX=235-dataCanvas.scrollLeft()-bodyDiv.scrollLeft(),gapY=131-dataCanvas.scrollTop()-bodyDiv.scrollTop();
+                    var x= e.clientX-gapX; var y=e.clientY-gapY;
+
+                    SelectedShape(ctx,x,y,gapX,gapY);
+                };
+            },
+            // conflictDraw:function () {
+            //     var cCan=document.getElementById(this.configBrush);
+            //     var ctx=cCan.getContext('2d');
+            //     ctx.clearRect(0,0,cCan.width,cCan.height);
+
+            //     ctx.fillStyle="rgba(211,0,0,0.5)";
+
+            //     var length=configNew.length,confArr="",cL;
+
+            //     // var c_num=0;
+
+            //     // console.log(planShowData);
+
+            //     for(var i=0;i<length;i++){
+
+            //         confArr=configNew[i].conflictPlanIds;
+
+            //         // console.log(confArr);
+
+            //         cL=confArr.length;
+            //         if(cL>0){
+            //             // c_num++;
+            //             for(var j=0;j<cL;j++){
+            //                 isOverlap(configNew[i].plan.split(","), confArr[j].split(","));
+            //             }
+            //         }
+            //     }
+
+            //     // console.log(c_num);
+
+            //     // $("#configNum").html(c_num);
+            // },
+        };
+
+        $(document).ready(function () {
+            drawMain.textColor1=$("#lineBtn label").css("color");
+
+            staAjax();
+            lineAjax();
+
+            drawMain.timeTitle('timeCtx');
+
+            planAjax();
+
+
+            
+
+
+            setTimeout(function () { //延迟加载
+                
+                drawMain.timeTitle('time7Ctx');
+            },1000);
+
+
+            $("#timeKey").change(function () {
+                if(arrJd){
+                    $("#update-alert").modal("show");
+
+                    subData(0,'alertTBody');
+
+                    return;
+                }
+                planAjax();
+            });
+
+            // console.log(document.body.clientWidth);
+        });
+
+        function isInteger(obj) {return parseInt(obj, 10) === obj;}
+
+        function subData(type,showId) {
+            var ele=(showId=="alertTBody")?$("#n_alert_msg"):$("#out_alert_msg");
+
+            batchData(showId);
+            // console.log(dataArr);
+
+            if(type==1){
+                $.ajax({
+                    type: "POST",
+                    url: "http://47.99.211.157:8081/epvase/subway/pix/updateInfo",
+                    contentType: "application/json;charset=UTF-8",
+                    data:JSON.stringify(postArr),
+                    success: function (json) {
+                        // ele.html("数据提交中……");
+
+                        if(json.code==0){
+                            ele.html("修改成功");
+
+                            setTimeout(function () {
+                                $("#myModal-update,#update-alert").modal('hide');
+                                planAjax();
+                                ele.html("确定数据修改正确？");
+
+                                $("#subBtn").prop("disabled",true);
+                                // location.reload(window.location.href);
+                            },1000)
+                            // }
+
+                        }else{
+                            ele.css("display","block").html("网络错误，请刷新后重试");
+                        }
+                    },
+                    error: function () {
+                        console.log("请求失败");
+                    }
+                })
+            }
+        }
+
+        function isOverlap (r1, r2) {
+            var mx1 = Math.max(+r1[1], +r2[1]);
+            var mx2 = Math.min(+r1[2], +r2[2]);
+            var my1 = Math.max(+r1[3], +r2[3]);
+            var my2 = Math.min(+r1[4], +r2[4]);
+
+            var bool = mx1 <= mx2 && my1 <= my2;
+
+            if (bool) {
+                var w = mx2 - mx1;
+                var h = parseInt(my2 - my1);
+
+                drawMain.configCtx.fillRect(mx1, my1, w, h);
+
+            }
+        }
+
+        function togglePage() {
+
+            if(arrJd){
+
+                $("#update-alert").modal("show");
+
+                batchData('alertTBody');
+
+                return;
+            }else{
+
+                planAjax();
+
+            }
+        }
+        
+        function batchData(showId) {
+            var data=postData,html="",obj={};
+
+            postArr=[];
+
+            var x1,x2;
+
+            var time=$("#timeKey").val();
+            var isType=(timeType==18)?"00":"01";
+
+            for(var a=0,aLen=data.length;a<aLen;a++){
+                info=data[a];
+
+                x1=timePxTr(info.pixX1);
+                x2=timePxTr(info.pixX2);
+
+                html+="<tr>" +
+                    "<td>"+info.workNo+"</td>" +
+                    "<td>"+lineShowName(info.upDownLineTypeCd)+"</td>" +
+                    "<td>"+comStaPxJudge(info.pixY1,2)+" 至 "+comStaPxJudge(info.pixY2,2)+"</td>" +
+                    // "<td>"+mileageShow(info.applyTrackLineStartMil)+" 至 "+mileageShow(info.applyTrackLineEndMil)+"</td>" +
+                    "<td>"+info.workUnit+"</td>" +
+                    "<td>"+info.planUser+"</td>" +
+                    "<td class='timeWord'>"+x1+" 至 "+x2+"</td>" +
+                    "</tr>";
+
+                obj={
+                    "lineId":info.lineId,
+                    "planId":info.planId,
+                    "startTime" :x1+":00","endTime":x2+":00",
+                    "startStationId":comStaPxJudge(info.pixY1,1),"endStationId":comStaPxJudge(info.pixY2,1),
+                    "time":time,"isShow":"00","type":isType
+                };
+
+                postArr[a]=obj;
+            }
+
+            $("#"+showId).html(html);
+        }
+    </script>
+
+</body>
+</html>
